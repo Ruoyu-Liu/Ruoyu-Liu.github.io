@@ -868,7 +868,287 @@ if (option && typeof option === "object") {
             <div class="col-md-10 align-center">
                 <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2">
                     沉默的专家</h1>
-                
+                <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 2000px; -webkit-tap-highlight-color: transparent; user-select: none;" _echarts_instance_="ec_1589808636338"><div style="position: relative; width: 1440px; height: 788px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="1440" height="788" style="position: absolute; left: 0px; top: 0px; width: 1440px; height: 788px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div></div>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+ var colors = ['#FFAE57', '#FF7853', '#EA5151', '#CC3F57', '#9A2555'];
+var bgColor = '#2E2733';
+
+var itemStyle = {
+    star5: {
+        color: colors[0]
+    },
+    star4: {
+        color: colors[1]
+    },
+    star3: {
+        color: colors[2]
+    },
+    star2: {
+        color: colors[3]
+    }
+};
+
+var data = [{
+    name: '非医学',
+    itemStyle: {
+        color: colors[1]
+    },
+    children: [{
+        name: '公共事务',
+        children: [{
+            name: '5☆',
+            children: [{
+                name: '彭宗超'
+            }, {
+                name: '董光鹏'
+            }, ]
+        }]
+    }, {
+        name: '传媒',
+        children: [ {
+            name: '5☆',
+            children: [{
+                name: '杨宇军'
+            }, ]
+        }]
+    }, {
+        name: '法律',
+        children: [{
+            name: '5☆',
+            children: [{
+                name: '郑雪倩'
+            }]
+        }]
+    }]
+}, {
+    name: '医学类',
+    itemStyle: {
+        color: colors[2]
+    },
+    children: [{
+        name: '军队系统',
+        children: [{
+            name: '5☆',
+            children: [{
+                name: '王勇'
+            },{
+                name: '王长军'
+            },{
+                name: '孙岩松'
+            },{
+                name: '宋青'
+            },{
+                name: '赵彤言'
+            },{
+                name: '陈良安'
+            }]
+        }]
+    }, {
+        name: 'CDC系统',
+        children: [ {
+            name: '4☆',
+            children: [{
+                name: '么海雁'
+            }, {
+                name: '李德新'
+            }, {
+                name: '于石成'
+            }]
+        }]
+    }, {
+        name: '其他组织',
+        children: [ {
+            name: '5☆',
+            children: [{
+                name: '王健伟'
+            }, {
+                name: '刘民'
+            },{
+                name: '刘钰'
+            },{
+                name: '侯云德'
+            },{
+                name: '席修明'
+            },{
+                name: '梁联春'
+            },{
+                name: '王全意'
+            },{
+                name: '李立明'
+            },{
+                name: '李光熙'
+            },]
+        }]
+    }, {
+        name: '卫健组织',
+        children: [{
+            name: '3☆',
+            children: [{
+                name: '刘霞'
+            },{
+                name: '汪华'
+            },{
+                name: '杨维中'
+            },{
+                name: '吴敬'
+            },{
+                name: '梁晓峰'
+            }]
+        }]
+    }]
+}];
+
+for (var j = 0; j < data.length; ++j) {
+    var level1 = data[j].children;
+    for (var i = 0; i < level1.length; ++i) {
+        var block = level1[i].children;
+        var bookScore = [];
+        var bookScoreId;
+        for (var star = 0; star < block.length; ++star) {
+            var style = (function (name) {
+                switch (name) {
+                    case '5☆':
+                        bookScoreId = 0;
+                        return itemStyle.star5;
+                    case '4☆':
+                        bookScoreId = 1;
+                        return itemStyle.star4;
+                    case '3☆':
+                        bookScoreId = 2;
+                        return itemStyle.star3;
+                    case '2☆':
+                        bookScoreId = 3;
+                        return itemStyle.star2;
+                }
+            })(block[star].name);
+
+            block[star].label = {
+                color: style.color,
+                downplay: {
+                    opacity: 0.5
+                }
+            };
+
+            if (block[star].children) {
+                style = {
+                    opacity: 1,
+                    color: style.color
+                };
+                block[star].children.forEach(function (book) {
+                    book.value = 1;
+                    book.itemStyle = style;
+
+                    book.label = {
+                        color: style.color
+                    };
+
+                    var value = 1;
+                    if (bookScoreId === 0 || bookScoreId === 3) {
+                        value = 5;
+                    }
+
+                    if (bookScore[bookScoreId]) {
+                        bookScore[bookScoreId].value += value;
+                    }
+                    else {
+                        bookScore[bookScoreId] = {
+                            color: colors[bookScoreId],
+                            value: value
+                        };
+                    }
+                });
+            }
+        }
+
+        level1[i].itemStyle = {
+            color: data[j].itemStyle.color
+        };
+    }
+}
+
+option = {
+    backgroundColor: bgColor,
+    color: colors,
+    series: [{
+        type: 'sunburst',
+        center: ['50%', '48%'],
+        data: data,
+        sort: function (a, b) {
+            if (a.depth === 1) {
+                return b.getValue() - a.getValue();
+            }
+            else {
+                return a.dataIndex - b.dataIndex;
+            }
+        },
+        label: {
+            rotate: 'radial',
+            color: bgColor
+        },
+        itemStyle: {
+            borderColor: bgColor,
+            borderWidth: 2
+        },
+        levels: [{}, {
+            r0: 0,
+            r: 40,
+            label: {
+                rotate: 0
+            }
+        }, {
+            r0: 40,
+            r: 105
+        }, {
+            r0: 115,
+            r: 140,
+            itemStyle: {
+                shadowBlur: 2,
+                shadowColor: colors[2],
+                color: 'transparent'
+            },
+            label: {
+                rotate: 'tangential',
+                fontSize: 10,
+                color: colors[0]
+            }
+        }, {
+            r0: 140,
+            r: 145,
+            itemStyle: {
+                shadowBlur: 80,
+                shadowColor: colors[0]
+            },
+            label: {
+                position: 'outside',
+                textShadowBlur: 5,
+                textShadowColor: '#333',
+            },
+            downplay: {
+                label: {
+                    opacity: 0.5
+                }
+            }
+        }]
+    }]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   
                 
                 
             </div>
